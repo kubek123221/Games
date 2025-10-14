@@ -14,13 +14,35 @@
       <pre id="stages"></pre>
     </div>
 
-    <div id="category"></div> <!-- Kategoria wyświetlana na początku rundy -->
+    <div id="category"></div>
     <div id="word"></div>
     <div id="letters"></div>
 
     <div id="message"></div>
 
     <button id="restart">🔄 Zagraj ponownie</button>
+    <button id="twoPlayers">👥 2 Players</button>
+
+    <div id="scoreboard" style="display:none;">
+      <table>
+        <thead>
+          <tr>
+            <th>Gracz</th>
+            <th>Punkty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" id="player1Name" placeholder="Gracz 1" /></td>
+            <td id="player1Score">0</td>
+          </tr>
+          <tr>
+            <td><input type="text" id="player2Name" placeholder="Gracz 2" /></td>
+            <td id="player2Score">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script src="script.js"></script>
