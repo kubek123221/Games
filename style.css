@@ -12,18 +12,19 @@ body {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  padding: 0 10px;
 }
 
 #category {
   font-size: 1.2em;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   color: #ffeaa7;
 }
 
 #word {
   font-size: 2em;
   letter-spacing: 8px;
-  margin: 20px 0;
+  margin: 15px 0;
 }
 
 #letters {
@@ -90,17 +91,26 @@ body {
   min-height: 1.5em;
 }
 
-/* Responsywność dla małych ekranów */
+/* Responsywność */
 @media (max-width: 500px) {
   #letters button {
-    padding: 10px 12px;
-    flex: 1 0 25px;
+    padding: 10px 10px;
+    flex: 1 0 22px;
     font-size: 0.9em;
-    max-width: 40px;
+    max-width: 35px;
   }
 
   #restart {
     padding: 10px 20px;
     font-size: 0.9em;
+  }
+
+  #word {
+    font-size: 1.5em;
+    letter-spacing: 5px;
+  }
+
+  #category {
+    font-size: 1em;
   }
 }
