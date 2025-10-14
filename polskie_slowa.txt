@@ -13,7 +13,7 @@ Samsung;Marka
 Coca-Cola;Marka
 Toyota;Marka
 Netflix;Marka
-Louis Vuitton;Marka
+Louis-Vuitton;Marka
 Nike;Marka
 Disney;Marka
 BMW;Marka
