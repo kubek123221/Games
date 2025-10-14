@@ -67,8 +67,8 @@ body {
   cursor: not-allowed;
 }
 
-#restart {
-  margin-top: 20px;
+#restart, #twoPlayers {
+  margin-top: 10px;
   background: #f2aa4c;
   border: none;
   padding: 12px 24px;
@@ -80,7 +80,7 @@ body {
   transition: 0.2s ease;
 }
 
-#restart:hover {
+#restart:hover, #twoPlayers:hover {
   background: #ffffff;
   color: #101820;
 }
@@ -89,6 +89,31 @@ body {
   margin-top: 20px;
   font-size: 1.3em;
   min-height: 1.5em;
+}
+
+#scoreboard {
+  margin-top: 20px;
+}
+
+#scoreboard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#scoreboard th, #scoreboard td {
+  border: 1px solid #f2aa4c;
+  padding: 8px;
+  color: #f2aa4c;
+  font-size: 1em;
+}
+
+#scoreboard input {
+  width: 90%;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #f2aa4c;
+  background: #101820;
+  color: #f2aa4c;
 }
 
 /* Responsywność */
@@ -100,7 +125,7 @@ body {
     max-width: 35px;
   }
 
-  #restart {
+  #restart, #twoPlayers {
     padding: 10px 20px;
     font-size: 0.9em;
   }
