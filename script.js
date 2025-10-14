@@ -19,6 +19,13 @@ const stagesDiv = document.getElementById("stages");
 const messageDiv = document.getElementById("message");
 const restartBtn = document.getElementById("restart");
 
+// 🔹 Układ QWERTY
+const rows = [
+  "q w e r t y u i o p".split(" "),
+  "a ą s ś d f g h j k l ł".split(" "),
+  "z ź x c ć v b n ń m".split(" ")
+];
+
 // 🔹 Wczytanie słów z pliku tekstowego
 async function loadWords() {
   try {
@@ -62,16 +69,22 @@ function showWord() {
   }
 }
 
-// 🔹 Tworzenie przycisków z literami
+// 🔹 Tworzenie przycisków w układzie QWERTY
 function generateLetters() {
-  const alphabet = "aąbcćdeęfghijklłmnńoópqrsśtuwyzźż".split("");
   lettersDiv.innerHTML = "";
 
-  alphabet.forEach(letter => {
-    const btn = document.createElement("button");
-    btn.textContent = letter;
-    btn.onclick = () => guess(letter, btn);
-    lettersDiv.appendChild(btn);
+  rows.forEach(row => {
+    const rowDiv = document.createElement("div");
+    rowDiv.className = "keyboard-row";
+
+    row.forEach(letter => {
+      const btn = document.createElement("button");
+      btn.textContent = letter;
+      btn.onclick = () => guess(letter, btn);
+      rowDiv.appendChild(btn);
+    });
+
+    lettersDiv.appendChild(rowDiv);
   });
 }
 
