@@ -1,5 +1,6 @@
 let words = [];
 let word = "";
+let category = "";
 let guessed = [];
 let wrong = 0;
 
@@ -18,12 +19,13 @@ const lettersDiv = document.getElementById("letters");
 const stagesDiv = document.getElementById("stages");
 const messageDiv = document.getElementById("message");
 const restartBtn = document.getElementById("restart");
+const categoryDiv = document.getElementById("category");
 
-// 🔹 Układ QWERTY
+// 🔹 Układ QWERTY z polskimi znakami na końcu rzędów
 const rows = [
   "q w e r t y u i o p".split(" "),
-  "a ą s ś d f g h j k l ł".split(" "),
-  "z ź x c ć v b n ń m".split(" ")
+  "a s d f g h j k l".split(" ").concat(["ą","ł"]),
+  "z x c v b n m".split(" ").concat(["ć","ę","ń","ś","ź","ż"])
 ];
 
 // 🔹 Wczytanie słów z pliku tekstowego
@@ -33,9 +35,14 @@ async function loadWords() {
     const text = await response.text();
     words = text
       .split("\n")
-      .map(w => w.trim().toLowerCase())
-      .filter(w => w.length > 0);
-    console.log("Wczytano słowa:", words.length);
+      .map(line => {
+        const parts = line.split(";");
+        return {
+          word: parts[0].trim().toLowerCase(),
+          category: parts[1]?.trim() || "Brak kategorii"
+        };
+      })
+      .filter(w => w.word.length > 0);
     startGame();
   } catch (err) {
     messageDiv.textContent = "⚠️ Nie udało się wczytać pliku polskie_slowa.txt. Uruchom grę przez serwer lokalny.";
@@ -49,11 +56,15 @@ function startGame() {
     return;
   }
 
-  word = words[Math.floor(Math.random() * words.length)];
+  const chosen = words[Math.floor(Math.random() * words.length)];
+  word = chosen.word;
+  category = chosen.category;
+
   guessed = [];
   wrong = 0;
   messageDiv.textContent = "";
   stagesDiv.textContent = "";
+  categoryDiv.textContent = `Kategoria: ${category}`;
   showWord();
   generateLetters();
 }
