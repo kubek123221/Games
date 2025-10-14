@@ -21,11 +21,11 @@ const messageDiv = document.getElementById("message");
 const restartBtn = document.getElementById("restart");
 const categoryDiv = document.getElementById("category");
 
-// 🔹 Układ QWERTY z polskimi znakami na końcu rzędów
+// 🔹 Układ QWERTY z polskimi znakami po literze "m"
 const rows = [
   "q w e r t y u i o p".split(" "),
-  "a s d f g h j k l".split(" ").concat(["ą","ł"]),
-  "z x c v b n m".split(" ").concat(["ć","ę","ń","ś","ź","ż"])
+  "a s d f g h j k l".split(" "),
+  "z x c v b n m".split(" ").concat(["ą","ć","ę","ł","ń","ó","ś","ź","ż"])
 ];
 
 // 🔹 Wczytanie słów z pliku tekstowego
@@ -64,7 +64,7 @@ function startGame() {
   wrong = 0;
   messageDiv.textContent = "";
   stagesDiv.textContent = "";
-  categoryDiv.textContent = `Kategoria: ${category}`; // wyświetlenie podpowiedzi na początku rundy
+  categoryDiv.textContent = `Kategoria: ${category}`; // podpowiedź na początku rundy
   showWord();
   generateLetters();
 }
