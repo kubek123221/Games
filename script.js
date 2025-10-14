@@ -71,7 +71,13 @@ function startGame() {
 
 // 🔹 Wyświetlanie słowa
 function showWord() {
-  const display = word.split("").map(l => (guessed.includes(l) ? l : "_")).join(" ");
+  const display = word
+    .split("")
+    .map(l => {
+      if (l === "-") return "-";       // <-- znak "-" jest wyświetlany od razu
+      return guessed.includes(l) ? l : "_";
+    })
+    .join(" ");
   wordDiv.textContent = display;
 
   if (!display.includes("_")) {
