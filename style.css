@@ -1,7 +1,7 @@
 body {
   font-family: "Segoe UI", sans-serif;
-  background: #91b9e1;
-  color: #b5f24c;
+  background: #101820;
+  color: #f2aa4c;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -20,7 +20,7 @@ body {
 #letters button {
   margin: 3px;
   padding: 10px 15px;
-  background: #b5f24c;
+  background: #f2aa4c;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -40,9 +40,13 @@ body {
   cursor: not-allowed;
 }
 
+.keyboard-row {
+  margin-bottom: 5px;
+}
+
 #restart {
   margin-top: 20px;
-  background: #b5f24c;
+  background: #f2aa4c;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
