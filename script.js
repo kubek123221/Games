@@ -64,7 +64,7 @@ function startGame() {
   wrong = 0;
   messageDiv.textContent = "";
   stagesDiv.textContent = "";
-  categoryDiv.textContent = `Kategoria: ${category}`;
+  categoryDiv.textContent = `Kategoria: ${category}`; // wyświetlenie podpowiedzi na początku rundy
   showWord();
   generateLetters();
 }
