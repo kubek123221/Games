@@ -1,0 +1,64 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #101820;
+  color: #b5f24c;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+#word {
+  font-size: 2em;
+  letter-spacing: 8px;
+  margin: 20px 0;
+}
+
+#letters button {
+  margin: 3px;
+  padding: 10px 15px;
+  background: #b5f24c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #101820;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+#letters button:hover:not(:disabled) {
+  background: #ffffff;
+  color: #101820;
+}
+
+#letters button:disabled {
+  background: #444;
+  color: #999;
+  cursor: not-allowed;
+}
+
+#restart {
+  margin-top: 20px;
+  background: #b5f24c;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #101820;
+  transition: 0.2s ease;
+}
+
+#restart:hover {
+  background: #ffffff;
+  color: #101820;
+}
+
+#message {
+  margin-top: 20px;
+  font-size: 1.3em;
+  min-height: 1.5em;
+}
