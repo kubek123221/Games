@@ -15,6 +15,86 @@ body {
   padding: 0 10px;
 }
 
+h1 {
+  font-size: 2.2em;
+}
+
+/* menu główne */
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.menu-buttons button {
+  background: #f2aa4c;
+  color: #101820;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.menu-buttons button:hover {
+  background: #ffffff;
+  color: #101820;
+}
+
+/* przycisk języka */
+#langToggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: #f2aa4c;
+  color: #101820;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s ease;
+  z-index: 1000;
+}
+
+#langToggle:hover {
+  background: #ffffff;
+  color: #101820;
+}
+
+/* wybór kategorii */
+#category-select {
+  margin-top: 20px;
+}
+
+#category-select h2 {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#category-select button {
+  margin: 5px;
+  background: #f2aa4c;
+  color: #101820;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#category-select button:hover {
+  background: #ffffff;
+  color: #101820;
+}
+
+/* gra wisielec */
 #category {
   font-size: 1.2em;
   margin-bottom: 10px;
@@ -116,7 +196,7 @@ body {
   color: #f2aa4c;
 }
 
-/* Responsywność */
+/* responsywność */
 @media (max-width: 500px) {
   #letters button {
     padding: 10px 10px;
