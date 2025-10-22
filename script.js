@@ -3,22 +3,89 @@ let word = "";
 let category = "";
 let guessed = [];
 let wrong = 0;
+let selectedFile = null;
+let selectedLang = 'Pl'; // domyślnie Polski
+let selectedCategory = null;
 
-// 2-player variables
+// tryb 2 graczy
 let twoPlayerMode = false;
 let currentPlayer = 1;
 let player1Score = 0;
 let player2Score = 0;
 
 const stages = [
-  "",
-  "__________",
-  "|        |",
-  "|        O",
-  "|       /|\\",
-  "|       / \\",
-  "|"
+`
+
+
+
+
+
+`,
+`
+     _______
+    |/      
+    |       
+    |       
+    |       
+    |       
+____|____
+`,
+`
+     _______
+    |/      |
+    |      (_)
+    |       
+    |       
+    |       
+____|____
+`,
+`
+     _______
+    |/      |
+    |      (_)
+    |       |
+    |       |
+    |       
+____|____
+`,
+`
+     _______
+    |/      |
+    |      (_)
+    |      \\|
+    |       |
+    |       
+____|____
+`,
+`
+     _______
+    |/      |
+    |      (_)
+    |      \\|/
+    |       |
+    |       
+____|____
+`,
+`
+     _______
+    |/      |
+    |      (_)
+    |      \\|/
+    |       |
+    |      / 
+____|____
+`,
+`
+     _______
+    |/      |
+    |      (_)
+    |      \\|/
+    |       |
+    |      / \\
+____|____
+`
 ];
+
 
 const wordDiv = document.getElementById("word");
 const lettersDiv = document.getElementById("letters");
@@ -32,30 +99,69 @@ const player1ScoreTd = document.getElementById("player1Score");
 const player2ScoreTd = document.getElementById("player2Score");
 const scoreboard = document.getElementById("scoreboard");
 
+const langToggleBtn = document.getElementById("langToggle");
+
 const rows = [
   "q w e r t y u i o p".split(" "),
   "a s d f g h j k l".split(" "),
   "z x c v b n m".split(" ").concat(["ą","ć","ę","ł","ń","ó","ś","ź","ż"])
 ];
 
-// 🔹 Wczytanie słów
-async function loadWords() {
-  const response = await fetch("polskie_slowa.txt");
-  const text = await response.text();
-  words = text
-    .split("\n")
-    .map(line => {
-      const parts = line.split(";");
-      return {
-        word: parts[0].trim().toLowerCase(),
-        category: parts[1]?.trim() || "Brak kategorii"
-      };
-    })
-    .filter(w => w.word.length > 0);
-  startGame();
+// 🔹 przycisk zmiany języka
+langToggleBtn.onclick = () => {
+  selectedLang = selectedLang === 'Pl' ? 'Ang' : 'Pl';
+  langToggleBtn.textContent = selectedLang === 'Pl' ? 'Polsk🇵🇱' : 'English🇬🇧';
+  if (selectedCategory) {
+    selectedFile = `${selectedCategory}_words_${selectedLang}.txt`;
+    loadWords();
+  }
+  updateUIText();
+};
+
+// 🔹 zmiana tekstów interfejsu
+function updateUIText() {
+  if (selectedLang === 'Pl') {
+    restartBtn.textContent = '🔄 Zagraj ponownie';
+    twoPlayersBtn.textContent = '👥 2 Gracze';
+    if (!twoPlayerMode) messageDiv.textContent = '';
+  } else {
+    restartBtn.textContent = '🔄 Play Again';
+    twoPlayersBtn.textContent = '👥 2 Players';
+    if (!twoPlayerMode) messageDiv.textContent = '';
+  }
 }
 
-// 🔹 Start gry
+// 🔹 wybór kategorii
+function selectCategory(baseName) {
+  selectedCategory = baseName;
+  selectedFile = `${baseName}_words_${selectedLang}.txt`;
+  document.getElementById("category-select").style.display = "none";
+  document.getElementById("game").style.display = "block";
+  loadWords();
+}
+
+// 🔹 wczytywanie słów
+async function loadWords() {
+  try {
+    const response = await fetch(selectedFile);
+    const text = await response.text();
+    words = text
+      .split("\n")
+      .map(line => {
+        const parts = line.split(";");
+        return {
+          word: parts[0].trim().toLowerCase(),
+          category: parts[1]?.trim() || (selectedLang==='Pl'?'Brak kategorii':'No category')
+        };
+      })
+      .filter(w => w.word.length > 0);
+    startGame();
+  } catch {
+    messageDiv.textContent = `⚠️ Nie udało się wczytać pliku ${selectedFile}!`;
+  }
+}
+
+// 🔹 start gry
 function startGame() {
   currentPlayer = 1;
   guessed = [];
@@ -64,63 +170,56 @@ function startGame() {
   stagesDiv.textContent = "";
   categoryDiv.textContent = "";
 
-  if (words.length === 0) {
-    messageDiv.textContent = "Brak słów!";
-    return;
-  }
-
   const chosen = words[Math.floor(Math.random() * words.length)];
   word = chosen.word;
   category = chosen.category;
 
-  categoryDiv.textContent = `Kategoria: ${category}`;
+  categoryDiv.textContent = selectedLang==='Pl' ? `Kategoria: ${category}` : `Category: ${category}`;
   showWord();
   generateLetters();
 }
 
-// 🔹 Wyświetlanie słowa
+// 🔹 wyświetlanie słowa
 function showWord() {
   const display = word.split("").map(l => (l === "-" ? "-" : guessed.includes(l) ? l : "_")).join(" ");
   wordDiv.textContent = display;
 
   if (!display.includes("_")) {
-    // koniec gry: przyznaj 5 punktów temu kto zgadł
     if (twoPlayerMode) {
       if (currentPlayer === 1) player1Score += 5;
       else player2Score += 5;
       updateScoreboard();
     }
-    messageDiv.textContent = `🎉 Gracz ${currentPlayer} wygrał! Słowo: ${word}`;
+    messageDiv.textContent = selectedLang==='Pl' 
+      ? `🎉 Gracz ${currentPlayer} wygrał! Słowo: ${word}` 
+      : `🎉 Player ${currentPlayer} wins! Word: ${word}`;
     disableLetters();
   }
 }
 
-// 🔹 Tworzenie klawiatury
+// 🔹 generowanie klawiatury
 function generateLetters() {
   lettersDiv.innerHTML = "";
-
   rows.forEach(row => {
     const rowDiv = document.createElement("div");
     rowDiv.className = "keyboard-row";
-
     row.forEach(letter => {
+      if (selectedLang==='Ang' && "ąćęłńóśźż".includes(letter)) return; // pomiń polskie znaki w angielskim
       const btn = document.createElement("button");
       btn.textContent = letter;
       btn.onclick = () => guess(letter, btn);
       rowDiv.appendChild(btn);
     });
-
     lettersDiv.appendChild(rowDiv);
   });
 }
 
-// 🔹 Zgadywanie litery
+// 🔹 zgadywanie liter
 function guess(letter, button) {
   button.disabled = true;
 
   if (word.includes(letter)) {
     guessed.push(letter);
-    // punkty w trybie 2 graczy
     if (twoPlayerMode) {
       const count = word.split("").filter(l => l === letter).length;
       if (currentPlayer === 1) player1Score += count;
@@ -132,29 +231,32 @@ function guess(letter, button) {
     wrong++;
     updateHangman();
     if (wrong >= stages.length - 1) {
-      messageDiv.textContent = `💀 Koniec rundy! Słowo: ${word}`;
+      messageDiv.textContent = selectedLang==='Pl'
+        ? `💀 Koniec rundy! Słowo: ${word}`
+        : `💀 Game over! Word: ${word}`;
       disableLetters();
     }
   }
 
-  // zmiana gracza w trybie 2 graczy po nieudanej literze
   if (twoPlayerMode && !word.includes(letter)) {
     currentPlayer = currentPlayer === 1 ? 2 : 1;
-    messageDiv.textContent = `Tura gracza ${currentPlayer}`;
+    messageDiv.textContent = selectedLang==='Pl'
+      ? `Tura gracza ${currentPlayer}`
+      : `Player ${currentPlayer} turn`;
   }
 }
 
-// 🔹 Wisielec
+// 🔹 rysowanie wisielca
 function updateHangman() {
   stagesDiv.textContent = stages.slice(0, wrong + 1).join("\n");
 }
 
-// 🔹 Blokowanie przycisków
+// 🔹 blokowanie przycisków
 function disableLetters() {
   document.querySelectorAll("#letters button").forEach(btn => (btn.disabled = true));
 }
 
-// 🔹 2-player mode
+// 🔹 tryb 2 graczy
 twoPlayersBtn.onclick = () => {
   twoPlayerMode = true;
   player1Score = 0;
@@ -164,18 +266,15 @@ twoPlayersBtn.onclick = () => {
   startGame();
 };
 
-// 🔹 Aktualizacja punktów
+// 🔹 aktualizacja punktów
 function updateScoreboard() {
   player1ScoreTd.textContent = player1Score;
   player2ScoreTd.textContent = player2Score;
 }
 
-// 🔹 Restart
+// 🔹 restart gry
 restartBtn.onclick = () => {
   twoPlayerMode = false;
   scoreboard.style.display = "none";
   startGame();
 };
-
-// start gry solo
-loadWords();
