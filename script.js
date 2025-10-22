@@ -86,7 +86,6 @@ ____|____
 `
 ];
 
-
 const wordDiv = document.getElementById("word");
 const lettersDiv = document.getElementById("letters");
 const stagesDiv = document.getElementById("stages");
@@ -167,7 +166,7 @@ function startGame() {
   guessed = [];
   wrong = 0;
   messageDiv.textContent = "";
-  stagesDiv.textContent = "";
+  stagesDiv.textContent = stages[0]; // początkowy etap
   categoryDiv.textContent = "";
 
   const chosen = words[Math.floor(Math.random() * words.length)];
@@ -175,6 +174,7 @@ function startGame() {
   category = chosen.category;
 
   categoryDiv.textContent = selectedLang==='Pl' ? `Kategoria: ${category}` : `Category: ${category}`;
+
   showWord();
   generateLetters();
 }
@@ -204,7 +204,7 @@ function generateLetters() {
     const rowDiv = document.createElement("div");
     rowDiv.className = "keyboard-row";
     row.forEach(letter => {
-      if (selectedLang==='Ang' && "ąćęłńóśźż".includes(letter)) return; // pomiń polskie znaki w angielskim
+      if (selectedLang==='Ang' && "ąćęłńóśźż".includes(letter)) return;
       const btn = document.createElement("button");
       btn.textContent = letter;
       btn.onclick = () => guess(letter, btn);
@@ -248,7 +248,7 @@ function guess(letter, button) {
 
 // 🔹 rysowanie wisielca
 function updateHangman() {
-  stagesDiv.textContent = stages.slice(0, wrong + 1).join("\n");
+  stagesDiv.textContent = stages[wrong];
 }
 
 // 🔹 blokowanie przycisków
