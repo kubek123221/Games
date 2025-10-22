@@ -1,50 +1,19 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wisielec 🎯</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Gier 🎮</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>🎯 Gra Wisielec</h1>
+    <h1>🎮 Wybierz grę</h1>
 
-    <div id="hangman">
-      <pre id="stages"></pre>
-    </div>
-
-    <div id="category"></div>
-    <div id="word"></div>
-    <div id="letters"></div>
-
-    <div id="message"></div>
-
-    <button id="restart">🔄 Zagraj ponownie</button>
-    <button id="twoPlayers">👥 2 Players</button>
-
-    <div id="scoreboard" style="display:none;">
-      <table>
-        <thead>
-          <tr>
-            <th>Gracz</th>
-            <th>Punkty</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><input type="text" id="player1Name" placeholder="Gracz 1" /></td>
-            <td id="player1Score">0</td>
-          </tr>
-          <tr>
-            <td><input type="text" id="player2Name" placeholder="Gracz 2" /></td>
-            <td id="player2Score">0</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="menu-buttons">
+      <button onclick="window.location.href='wisielec.html'">🎯 Wisielec</button>
+      <button onclick="window.location.href='kolkoikrzyzyk.html'">⭕❌ Kółko i Krzyżyk</button>
     </div>
   </div>
-
-  <script src="script.js"></script>
 </body>
 </html>
