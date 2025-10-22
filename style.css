@@ -1,7 +1,7 @@
 body {
   font-family: "Segoe UI", sans-serif;
-  background: #101820;
-  color: #f2aa4c;
+  background: #557391;
+  color: #95f882;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -19,38 +19,12 @@ h1 {
   font-size: 2.2em;
 }
 
-/* menu główne */
-.menu-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  margin-top: 40px;
-}
-
-.menu-buttons button {
-  background: #f2aa4c;
-  color: #101820;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 8px;
-  font-size: 1.2em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.menu-buttons button:hover {
-  background: #ffffff;
-  color: #101820;
-}
-
 /* przycisk języka */
 #langToggle {
   position: fixed;
   top: 10px;
   right: 10px;
-  background: #f2aa4c;
+  background: #95f882;
   color: #101820;
   border: none;
   padding: 8px 14px;
@@ -79,7 +53,7 @@ h1 {
 
 #category-select button {
   margin: 5px;
-  background: #f2aa4c;
+  background: #95f882;
   color: #101820;
   border: none;
   padding: 10px 20px;
@@ -123,7 +97,7 @@ h1 {
 #letters button {
   margin: 3px;
   padding: 12px 18px;
-  background: #f2aa4c;
+  background: #95f882;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -149,7 +123,7 @@ h1 {
 
 #restart, #twoPlayers {
   margin-top: 10px;
-  background: #f2aa4c;
+  background: #95f882;
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
@@ -181,9 +155,9 @@ h1 {
 }
 
 #scoreboard th, #scoreboard td {
-  border: 1px solid #f2aa4c;
+  border: 1px solid #95f882;
   padding: 8px;
-  color: #f2aa4c;
+  color: #95f882;
   font-size: 1em;
 }
 
@@ -191,9 +165,9 @@ h1 {
   width: 90%;
   padding: 4px;
   border-radius: 4px;
-  border: 1px solid #f2aa4c;
+  border: 1px solid #95f882;
   background: #101820;
-  color: #f2aa4c;
+  color: #95f882;
 }
 
 /* responsywność */
