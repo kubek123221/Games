@@ -15,15 +15,14 @@ let player2Score = 0;
 
 const stages = [
 `
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-==========================
-`,
+
+
+
+
+
+
+
+==========================`,
 `
         ┌────────────┐
         │            
@@ -32,8 +31,7 @@ const stages = [
         │            
         │            
         │            
-==========================
-`,
+==========================`,
 `
         ┌────────────┐
         │            |
@@ -42,69 +40,62 @@ const stages = [
         │            
         │            
         │            
-==========================
-`,
+==========================`,
 `
         ┌────────────┐
         │            |
         │           (•_•)
-        │            │
-        │            │
+        │             │
+        │             │
         │            
         │            
-==========================
-`,
+==========================`,
 `
         ┌────────────┐
         │            |
         │           (o_o)
-        │           /│
-        │            │
+        │            /│
+        │             │
         │            
         │            
-==========================
-`,
+==========================`,
 `
         ┌────────────┐
         │            |
         │           (O_O)
-        │           /│\\
-        │            │
+        │            /│\\
+        │             │
         │            
         │            
-==========================
-`,
+==========================`,
 `
         ┌────────────┐
         │            |
         │           (>-<)
-        │           /│\\
-        │            │
-        │           / 
+        │            /│\\
+        │             │
+        │            / 
         │            
-==========================
-`,
+==========================`,
 `
         ┌────────────┐
         │            |
         │           (X_X)
-        │          _/│\\_
-        │            │
-        │           / \\
+        │           _/│\\_
+        │             │
+        │            / \\
         │         ─────────
 ==========================
 
-💀 KONIEC GRY 💀
-`
+💀 KONIEC GRY 💀`
 ];
-
-
 
 const wordDiv = document.getElementById("word");
 const lettersDiv = document.getElementById("letters");
 const stagesDiv = document.getElementById("stages");
 const messageDiv = document.getElementById("message");
 const restartBtn = document.getElementById("restart");
+const rematchBtn = document.getElementById("rematch");
 const twoPlayersBtn = document.getElementById("twoPlayers");
 const categoryDiv = document.getElementById("category");
 
@@ -124,14 +115,9 @@ const rows = [
 langToggleBtn.onclick = () => {
   selectedLang = selectedLang === 'Pl' ? 'Ang' : 'Pl';
   langToggleBtn.textContent = selectedLang === 'Pl' ? 'Polsk🇵🇱' : 'English🇬🇧';
-
-  // jeśli już wybrano kategorię, zmień plik
   if (selectedCategory) {
-    if(selectedCategory === 'misc') {
-      selectedFile = selectedLang === 'Pl' ? 'polskie_slowa.txt' : 'english_words.txt';
-    } else {
-      selectedFile = `${selectedCategory}_words_${selectedLang}.txt`;
-    }
+    if(selectedCategory === 'misc') selectedFile = selectedLang==='Pl'?'polskie_slowa.txt':'english_words.txt';
+    else if(selectedCategory === 'games') selectedFile = selectedLang==='Pl'?'gry_Pl.txt':'games_Ang.txt';
     loadWords();
   }
   updateUIText();
@@ -142,26 +128,22 @@ function updateUIText() {
   if (selectedLang === 'Pl') {
     restartBtn.textContent = '🔄 Zagraj ponownie';
     twoPlayersBtn.textContent = '👥 2 Gracze';
-    if (!twoPlayerMode) messageDiv.textContent = '';
+    rematchBtn.textContent = '♻ Rewanż';
   } else {
     restartBtn.textContent = '🔄 Play Again';
     twoPlayersBtn.textContent = '👥 2 Players';
-    if (!twoPlayerMode) messageDiv.textContent = '';
+    rematchBtn.textContent = '♻ Rematch';
   }
 }
 
 // 🔹 wybór kategorii
 function selectCategory(baseName) {
   selectedCategory = baseName;
-  
-  if(baseName === 'misc') {
-    selectedFile = selectedLang === 'Pl' ? 'polskie_slowa.txt' : 'english_words.txt';
-  } else {
-    selectedFile = `${baseName}_words_${selectedLang}.txt`;
-  }
+  if(baseName==='misc') selectedFile = selectedLang==='Pl'?'polskie_slowa.txt':'english_words.txt';
+  else if(baseName==='games') selectedFile = selectedLang==='Pl'?'gry_Pl.txt':'games_Ang.txt';
 
-  document.getElementById("category-select").style.display = "none";
-  document.getElementById("game").style.display = "block";
+  document.getElementById("category-select").style.display="none";
+  document.getElementById("game").style.display="block";
   loadWords();
 }
 
@@ -170,83 +152,70 @@ async function loadWords() {
   try {
     const response = await fetch(selectedFile);
     const text = await response.text();
+    words = text.split("\n").map(line=>{
+      line=line.trim();
+      if(!line) return null;
+      const parts = line.split(";");
+      return { word: parts[0].trim().toLowerCase(), category: parts[1]?.trim()|| (selectedLang==='Pl'?'Brak kategorii':'No category') };
+    }).filter(Boolean);
 
-    words = text
-      .split("\n")
-      .map(line => {
-        line = line.trim();
-        if(!line) return null;
-        const parts = line.split(";");
-        return {
-          word: parts[0].trim().toLowerCase(),
-          category: parts[1]?.trim() || (selectedLang==='Pl' ? 'Brak kategorii' : 'No category')
-        };
-      })
-      .filter(Boolean);
-
-    if(words.length === 0) {
-      messageDiv.textContent = selectedLang==='Pl' 
-        ? "⚠️ Plik jest pusty lub źle sformatowany!" 
-        : "⚠️ File is empty or incorrectly formatted!";
+    if(words.length===0){
+      messageDiv.textContent = selectedLang==='Pl'?"⚠️ Plik pusty lub źle sformatowany!":"⚠️ File empty or incorrect!";
       return;
     }
-
     startGame();
   } catch {
-    messageDiv.textContent = selectedLang==='Pl'
-      ? `⚠️ Nie udało się wczytać pliku ${selectedFile}!`
-      : `⚠️ Could not load file ${selectedFile}!`;
+    messageDiv.textContent = selectedLang==='Pl' ? `⚠️ Nie udało się wczytać pliku ${selectedFile}!` : `⚠️ Could not load ${selectedFile}!`;
   }
 }
 
 // 🔹 start gry
 function startGame() {
-  currentPlayer = 1;
   guessed = [];
   wrong = 0;
+  currentPlayer=1;
   messageDiv.textContent = "";
   stagesDiv.textContent = stages[0];
   categoryDiv.textContent = "";
 
-  const chosen = words[Math.floor(Math.random() * words.length)];
+  const chosen = words[Math.floor(Math.random()*words.length)];
   word = chosen.word;
   category = chosen.category;
-
-  categoryDiv.textContent = selectedLang==='Pl' ? `Kategoria: ${category}` : `Category: ${category}`;
+  categoryDiv.textContent = selectedLang==='Pl'?`Kategoria: ${category}`:`Category: ${category}`;
 
   showWord();
   generateLetters();
 }
 
 // 🔹 wyświetlanie słowa
-function showWord() {
-  const display = word.split("").map(l => (l === "-" ? "-" : guessed.includes(l) ? l : "_")).join(" ");
+function showWord(){
+  const display = word.split("").map(l=>(l==="-"?"-":guessed.includes(l)?l:"_")).join(" ");
   wordDiv.textContent = display;
 
-  if (!display.includes("_")) {
-    if (twoPlayerMode) {
-      if (currentPlayer === 1) player1Score += 5;
-      else player2Score += 5;
+  if(!display.includes("_")){
+    if(twoPlayerMode){
+      currentPlayer===1?player1Score+=5:player2Score+=5;
       updateScoreboard();
+      messageDiv.textContent = selectedLang==='Pl'?`🎉 Gracz ${currentPlayer} wygrał! Słowo: ${word}`:`🎉 Player ${currentPlayer} wins! Word: ${word}`;
+    } else {
+      messageDiv.textContent = selectedLang==='Pl'?`🎉 Wygrałeś! Słowo: ${word}`:`🎉 You won! Word: ${word}`;
     }
-    messageDiv.textContent = selectedLang==='Pl' 
-      ? `🎉 Gracz ${currentPlayer} wygrał! Słowo: ${word}` 
-      : `🎉 Player ${currentPlayer} wins! Word: ${word}`;
     disableLetters();
+    rematchBtn.style.display="inline-block";
   }
 }
 
 // 🔹 generowanie klawiatury
-function generateLetters() {
-  lettersDiv.innerHTML = "";
-  rows.forEach(row => {
+function generateLetters(){
+  lettersDiv.innerHTML="";
+  rows.forEach(row=>{
     const rowDiv = document.createElement("div");
-    rowDiv.className = "keyboard-row";
-    row.forEach(letter => {
-      if (selectedLang==='Ang' && "ąćęłńóśźż".includes(letter)) return;
+    rowDiv.className="keyboard-row";
+    row.forEach(letter=>{
+      if(selectedLang==='Ang' && "ąćęłńóśźż".includes(letter)) return;
       const btn = document.createElement("button");
-      btn.textContent = letter;
-      btn.onclick = () => guess(letter, btn);
+      btn.textContent=letter;
+      btn.onclick=()=>guess(letter,btn);
       rowDiv.appendChild(btn);
     });
     lettersDiv.appendChild(rowDiv);
@@ -254,66 +223,65 @@ function generateLetters() {
 }
 
 // 🔹 zgadywanie liter
-function guess(letter, button) {
-  button.disabled = true;
-
-  if (word.includes(letter)) {
+function guess(letter,button){
+  button.disabled=true;
+  if(word.includes(letter)){
     guessed.push(letter);
-    if (twoPlayerMode) {
-      const count = word.split("").filter(l => l === letter).length;
-      if (currentPlayer === 1) player1Score += count;
-      else player2Score += count;
+    if(twoPlayerMode){
+      const count=word.split("").filter(l=>l===letter).length;
+      currentPlayer===1?player1Score+=count:player2Score+=count;
       updateScoreboard();
     }
     showWord();
   } else {
     wrong++;
     updateHangman();
-    if (wrong >= stages.length - 1) {
-      messageDiv.textContent = selectedLang==='Pl'
-        ? `💀 Koniec rundy! Słowo: ${word}`
-        : `💀 Game over! Word: ${word}`;
+    if(wrong>=stages.length-1){
+      messageDiv.textContent = selectedLang==='Pl'?`💀 Koniec rundy! Słowo: ${word}`:`💀 Game over! Word: ${word}`;
       disableLetters();
+      rematchBtn.style.display="inline-block";
     }
   }
 
-  if (twoPlayerMode && !word.includes(letter)) {
-    currentPlayer = currentPlayer === 1 ? 2 : 1;
-    messageDiv.textContent = selectedLang==='Pl'
-      ? `Tura gracza ${currentPlayer}`
-      : `Player ${currentPlayer} turn`;
+  if(twoPlayerMode && !word.includes(letter)){
+    currentPlayer=currentPlayer===1?2:1;
+    messageDiv.textContent = selectedLang==='Pl'?`Tura gracza ${currentPlayer}`:`Player ${currentPlayer} turn`;
   }
 }
 
 // 🔹 rysowanie wisielca
-function updateHangman() {
-  stagesDiv.textContent = stages[wrong];
-}
+function updateHangman(){ stagesDiv.textContent=stages[wrong]; }
 
 // 🔹 blokowanie przycisków
-function disableLetters() {
-  document.querySelectorAll("#letters button").forEach(btn => (btn.disabled = true));
-}
+function disableLetters(){ document.querySelectorAll("#letters button").forEach(btn=>btn.disabled=true); }
 
 // 🔹 tryb 2 graczy
-twoPlayersBtn.onclick = () => {
-  twoPlayerMode = true;
-  player1Score = 0;
-  player2Score = 0;
+twoPlayersBtn.onclick = ()=>{
+  twoPlayerMode=true;
+  player1Score=0; player2Score=0;
   updateScoreboard();
-  scoreboard.style.display = "block";
+  scoreboard.style.display="block";
+  startGame();
+};
+
+// 🔹 rewanż (punkty zostają)
+rematchBtn.onclick = ()=>{
+  rematchBtn.style.display="none";
   startGame();
 };
 
 // 🔹 aktualizacja punktów
-function updateScoreboard() {
-  player1ScoreTd.textContent = player1Score;
-  player2ScoreTd.textContent = player2Score;
+function updateScoreboard(){
+  player1ScoreTd.textContent=player1Score;
+  player2ScoreTd.textContent=player2Score;
 }
 
-// 🔹 restart gry
-restartBtn.onclick = () => {
-  twoPlayerMode = false;
-  scoreboard.style.display = "none";
+// 🔹 restart gry (punkty zerowane)
+restartBtn.onclick = ()=>{
+  twoPlayerMode=false;
+  scoreboard.style.display="none";
+  rematchBtn.style.display="none";
+  player1Score=0; player2Score=0;
+  updateScoreboard();
   startGame();
 };
