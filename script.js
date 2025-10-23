@@ -15,76 +15,90 @@ let player2Score = 0;
 
 const stages = [
 `
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+==========================
+`,
+`
+        ┌────────────┐
+        │            
+        │            
+        │            
+        │            
+        │            
+        │            
+==========================
+`,
+`
+        ┌────────────┐
+        │            |
+        │           (^_^)
+        │            
+        │            
+        │            
+        │            
+==========================
+`,
+`
+        ┌────────────┐
+        │            |
+        │           (•_•)
+        │            │
+        │            │
+        │            
+        │            
+==========================
+`,
+`
+        ┌────────────┐
+        │            |
+        │           (o_o)
+        │           /│
+        │            │
+        │            
+        │            
+==========================
+`,
+`
+        ┌────────────┐
+        │            |
+        │           (O_O)
+        │           /│\\
+        │            │
+        │            
+        │            
+==========================
+`,
+`
+        ┌────────────┐
+        │            |
+        │           (>-<)
+        │           /│\\
+        │            │
+        │           / 
+        │            
+==========================
+`,
+`
+        ┌────────────┐
+        │            |
+        │           (X_X)
+        │          _/│\\_
+        │            │
+        │           / \\
+        │         ─────────
+==========================
 
-
-
-
-
-`,
-`
-     _______
-    |/      
-    |       
-    |       
-    |       
-    |       
-____|____
-`,
-`
-     _______
-    |/      |
-    |      (_)
-    |       
-    |       
-    |       
-____|____
-`,
-`
-     _______
-    |/      |
-    |      (_)
-    |       |
-    |       |
-    |       
-____|____
-`,
-`
-     _______
-    |/      |
-    |      (_)
-    |      \\|
-    |       |
-    |       
-____|____
-`,
-`
-     _______
-    |/      |
-    |      (_)
-    |      \\|/
-    |       |
-    |       
-____|____
-`,
-`
-     _______
-    |/      |
-    |      (_)
-    |      \\|/
-    |       |
-    |      / 
-____|____
-`,
-`
-     _______
-    |/      |
-    |      (_)
-    |      \\|/
-    |       |
-    |      / \\
-____|____
+💀 KONIEC GRY 💀
 `
 ];
+
+
 
 const wordDiv = document.getElementById("word");
 const lettersDiv = document.getElementById("letters");
@@ -110,8 +124,14 @@ const rows = [
 langToggleBtn.onclick = () => {
   selectedLang = selectedLang === 'Pl' ? 'Ang' : 'Pl';
   langToggleBtn.textContent = selectedLang === 'Pl' ? 'Polsk🇵🇱' : 'English🇬🇧';
+
+  // jeśli już wybrano kategorię, zmień plik
   if (selectedCategory) {
-    selectedFile = `${selectedCategory}_words_${selectedLang}.txt`;
+    if(selectedCategory === 'misc') {
+      selectedFile = selectedLang === 'Pl' ? 'polskie_slowa.txt' : 'english_words.txt';
+    } else {
+      selectedFile = `${selectedCategory}_words_${selectedLang}.txt`;
+    }
     loadWords();
   }
   updateUIText();
@@ -133,7 +153,13 @@ function updateUIText() {
 // 🔹 wybór kategorii
 function selectCategory(baseName) {
   selectedCategory = baseName;
-  selectedFile = `${baseName}_words_${selectedLang}.txt`;
+  
+  if(baseName === 'misc') {
+    selectedFile = selectedLang === 'Pl' ? 'polskie_slowa.txt' : 'english_words.txt';
+  } else {
+    selectedFile = `${baseName}_words_${selectedLang}.txt`;
+  }
+
   document.getElementById("category-select").style.display = "none";
   document.getElementById("game").style.display = "block";
   loadWords();
@@ -144,19 +170,32 @@ async function loadWords() {
   try {
     const response = await fetch(selectedFile);
     const text = await response.text();
+
     words = text
       .split("\n")
       .map(line => {
+        line = line.trim();
+        if(!line) return null;
         const parts = line.split(";");
         return {
           word: parts[0].trim().toLowerCase(),
-          category: parts[1]?.trim() || (selectedLang==='Pl'?'Brak kategorii':'No category')
+          category: parts[1]?.trim() || (selectedLang==='Pl' ? 'Brak kategorii' : 'No category')
         };
       })
-      .filter(w => w.word.length > 0);
+      .filter(Boolean);
+
+    if(words.length === 0) {
+      messageDiv.textContent = selectedLang==='Pl' 
+        ? "⚠️ Plik jest pusty lub źle sformatowany!" 
+        : "⚠️ File is empty or incorrectly formatted!";
+      return;
+    }
+
     startGame();
   } catch {
-    messageDiv.textContent = `⚠️ Nie udało się wczytać pliku ${selectedFile}!`;
+    messageDiv.textContent = selectedLang==='Pl'
+      ? `⚠️ Nie udało się wczytać pliku ${selectedFile}!`
+      : `⚠️ Could not load file ${selectedFile}!`;
   }
 }
 
@@ -166,7 +205,7 @@ function startGame() {
   guessed = [];
   wrong = 0;
   messageDiv.textContent = "";
-  stagesDiv.textContent = stages[0]; // początkowy etap
+  stagesDiv.textContent = stages[0];
   categoryDiv.textContent = "";
 
   const chosen = words[Math.floor(Math.random() * words.length)];
