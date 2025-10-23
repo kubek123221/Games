@@ -1,7 +1,7 @@
 body {
   font-family: "Segoe UI", sans-serif;
   background: #557391;
-  color: #ffffff;
+  color: #fff;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -9,53 +9,32 @@ body {
 
 .container {
   margin-top: 50px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 10px;
 }
 
 h1 {
-  font-size: 2.5em;
+  font-size: 3em;
   margin-bottom: 20px;
 }
 
-.lang-btn {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background: #95f882;
-  color: #101820;
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
+#game-board {
+  display: inline-block;
+  margin-bottom: 20px;
 }
 
-.lang-btn:hover {
-  background: #ffffff;
-  color: #101820;
-}
-
-.board {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 100px);
-  gap: 5px;
-  justify-content: center;
-  margin: 20px auto;
+.row {
+  display: flex;
 }
 
 .cell {
-  background: #95f882;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 80px;
+  height: 80px;
   font-size: 2.5em;
-  font-weight: bold;
+  margin: 5px;
   cursor: pointer;
   border-radius: 8px;
+  border: none;
+  background: #95f882;
+  color: #101820;
   transition: 0.2s;
 }
 
@@ -64,26 +43,28 @@ h1 {
   color: #101820;
 }
 
-#message {
-  font-size: 1.3em;
-  margin-top: 15px;
-  min-height: 1.5em;
-}
-
-#restartKik {
-  margin-top: 15px;
-  background: #95f882;
-  color: #101820;
-  border: none;
+#restart, #botMode {
+  margin: 10px 5px;
   padding: 12px 24px;
+  font-size: 1.2em;
+  border: none;
   border-radius: 8px;
-  font-weight: bold;
-  font-size: 1em;
   cursor: pointer;
+  font-weight: bold;
   transition: 0.2s;
 }
 
-#restartKik:hover {
+#restart:hover {
   background: #ffffff;
   color: #101820;
+}
+
+#botMode:hover {
+  background: #2980b9;
+}
+
+#message {
+  font-size: 1.4em;
+  margin: 15px 0;
+  min-height: 1.5em;
 }
