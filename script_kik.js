@@ -67,3 +67,4 @@ restartBtn.onclick = () => {
   gameOver = false;
   updateMessage();
 };
+ 
