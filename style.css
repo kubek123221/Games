@@ -1,3 +1,4 @@
+
 body {
   font-family: "Segoe UI", sans-serif;
   background: #557391;
@@ -16,10 +17,12 @@ body {
 }
 
 h1 {
-  font-size: 2.2em;
+  font-size: 3em;
+  color: #ffffff;
+  margin-bottom: 25px;
 }
 
-/* przycisk języka */
+/* --- PRZYCISK JĘZYKA --- */
 #langToggle {
   position: fixed;
   top: 10px;
@@ -27,58 +30,75 @@ h1 {
   background: #95f882;
   color: #101820;
   border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
+  padding: 12px 18px;
+  border-radius: 10px;
   font-weight: bold;
-  transition: 0.2s ease;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.3s ease;
   z-index: 1000;
 }
 
 #langToggle:hover {
   background: #ffffff;
   color: #101820;
+  box-shadow: 0 0 10px #95f882;
 }
 
-/* wybór kategorii */
-#category-select {
-  margin-top: 20px;
-}
-
-#category-select h2 {
-  font-size: 1.4em;
-  margin-bottom: 10px;
+/* --- PRZYCISKI ZAGRAJ PONOWNIE / 2 GRACZY --- */
+#restart, #twoPlayers {
+  display: inline-block;
+  margin-top: 15px;
+  background: #95f882;
+  border: none;
+  padding: 18px 36px;
+  border-radius: 10px;
   font-weight: bold;
+  font-size: 1.3em;
+  color: #101820;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
+#restart:hover, #twoPlayers:hover {
+  background: #ffffff;
+  color: #101820;
+  box-shadow: 0 0 10px #95f882;
+}
+
+/* --- KATEGORIE --- */
 #category-select button {
   margin: 5px;
+  padding: 12px 26px;
   background: #95f882;
   color: #101820;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: bold;
+  font-size: 1.2em;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.3s ease;
 }
 
 #category-select button:hover {
   background: #ffffff;
   color: #101820;
+  box-shadow: 0 0 10px #95f882;
 }
 
-/* gra wisielec */
+/* --- KATEGORIA PODPIS --- */
 #category {
-  font-size: 1.2em;
+  font-size: 1.4em;
   margin-bottom: 10px;
-  color: #ffeaa7;
+  color: #ffd700;
 }
 
+/* --- WYŚWIETLANE SŁOWO --- */
 #word {
-  font-size: 2em;
+  font-size: 2.2em;
   letter-spacing: 8px;
   margin: 15px 0;
+  color: #ffffff;
 }
 
 #letters {
@@ -95,24 +115,24 @@ h1 {
 }
 
 #letters button {
-  margin: 3px;
-  padding: 12px 18px;
+  margin: 4px;
+  padding: 16px 20px;
   background: #95f882;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
-  color: #101820;
+  font-size: 1.2em;
   font-weight: bold;
-  font-size: 1em;
-  flex: 1 0 35px;
-  max-width: 50px;
-  min-width: 30px;
+  color: #101820;
+  cursor: pointer;
   transition: 0.2s ease;
+  min-width: 35px;
+  max-width: 55px;
 }
 
 #letters button:hover:not(:disabled) {
   background: #ffffff;
   color: #101820;
+  box-shadow: 0 0 10px #95f882;
 }
 
 #letters button:disabled {
@@ -121,28 +141,12 @@ h1 {
   cursor: not-allowed;
 }
 
-#restart, #twoPlayers {
-  margin-top: 10px;
-  background: #95f882;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #101820;
-  font-size: 1em;
-  transition: 0.2s ease;
-}
-
-#restart:hover, #twoPlayers:hover {
-  background: #ffffff;
-  color: #101820;
-}
-
+/* --- WIADOMOŚCI I SCOREBOARD --- */
 #message {
   margin-top: 20px;
   font-size: 1.3em;
   min-height: 1.5em;
+  color: #ffffff;
 }
 
 #scoreboard {
@@ -170,27 +174,47 @@ h1 {
   color: #95f882;
 }
 
-/* responsywność */
+#stages {
+  color: #ffffff;
+  font-family: "Courier New", monospace;
+  font-size: 2em;
+  margin: 30px 0 15px 0;
+  white-space: pre;
+  line-height: 1.1;
+  text-shadow: 0 0 8px rgba(255,255,255,0.4), 0 0 20px rgba(149,248,130,0.3);
+  transition: opacity 0.4s ease;
+}
+
+
 @media (max-width: 500px) {
   #letters button {
-    padding: 10px 10px;
+    padding: 12px 16px;
     flex: 1 0 22px;
-    font-size: 0.9em;
-    max-width: 35px;
+    font-size: 1em;
+    max-width: 40px;
   }
 
   #restart, #twoPlayers {
-    padding: 10px 20px;
-    font-size: 0.9em;
+    padding: 14px 28px;
+    font-size: 1.1em;
   }
 
   #word {
-    font-size: 1.5em;
+    font-size: 1.8em;
     letter-spacing: 5px;
   }
 
   #category {
-    font-size: 1em;
+    font-size: 1.2em;
   }
 }
-  
+
+@media (max-width: 400px) {
+  #word {
+    letter-spacing: 4px;
+  }
+
+  h1 {
+    font-size: 2.5em;
+  }
+}
