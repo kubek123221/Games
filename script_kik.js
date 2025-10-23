@@ -1,69 +1,74 @@
 const cells = document.querySelectorAll(".cell");
 const messageDiv = document.getElementById("message");
-const restartBtn = document.getElementById("restartKik");
-const langToggleBtn = document.getElementById("langToggleKik");
+const restartBtn = document.getElementById("restart");
+const botModeBtn = document.getElementById("botMode");
 
-let board = Array(9).fill(null);
+let board = Array(9).fill("");
 let currentPlayer = "X";
-let gameOver = false;
-let selectedLang = 'Pl';
+let botEnabled = false;
 
-// 🔹 zmiana języka
-langToggleBtn.onclick = () => {
-  selectedLang = selectedLang === 'Pl' ? 'Ang' : 'Pl';
-  langToggleBtn.textContent = selectedLang === 'Pl' ? 'Polsk🇵🇱' : 'English🇬🇧';
-  if (!gameOver) updateMessage();
+// Włącz tryb bota
+botModeBtn.onclick = () => {
+  botEnabled = !botEnabled;
+  botModeBtn.textContent = botEnabled ? "🤖 Bot włączony" : "🤖 Tryb z Botem";
+  botModeBtn.style.background = botEnabled ? "#2980b9" : "#3498db";
+  restartGame();
 };
 
-// 🔹 kliknięcie w pole
+// restart gry
+restartBtn.onclick = restartGame;
+
+// dodaj eventy do pól
 cells.forEach(cell => {
-  cell.onclick = () => {
-    const index = cell.getAttribute("data-index");
-    if (!board[index] && !gameOver) {
-      board[index] = currentPlayer;
-      cell.textContent = currentPlayer;
-      checkWinner();
-      currentPlayer = currentPlayer === "X" ? "O" : "X";
-      updateMessage();
+  cell.addEventListener("click", () => {
+    const idx = cell.dataset.index;
+    if (!board[idx] && !isGameOver()) {
+      makeMove(idx, currentPlayer);
     }
-  };
+  });
 });
 
-// 🔹 sprawdzanie zwycięzcy
-function checkWinner() {
-  const winCombos = [
-    [0,1,2],[3,4,5],[6,7,8], // wiersze
-    [0,3,6],[1,4,7],[2,5,8], // kolumny
-    [0,4,8],[2,4,6]          // przekątne
-  ];
+// funkcje
+function makeMove(idx, player) {
+  board[idx] = player;
+  cells[idx].textContent = player;
 
-  for (const combo of winCombos) {
-    const [a,b,c] = combo;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      messageDiv.textContent = selectedLang==='Pl'?`🎉 Gracz ${board[a]} wygrał!`:`🎉 Player ${board[a]} wins!`;
-      gameOver = true;
-      return;
+  if(checkWinner(player)) {
+    messageDiv.textContent = `${player} wygrywa!`;
+  } else if(board.every(cell => cell)) {
+    messageDiv.textContent = "🤝 Remis!";
+  } else {
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+
+    if(botEnabled && currentPlayer==="O") {
+      botMove();
     }
   }
-
-  if (!board.includes(null)) {
-    messageDiv.textContent = selectedLang==='Pl'?'🤝 Remis!':'🤝 Draw!';
-    gameOver = true;
-  }
 }
 
-// 🔹 aktualizacja wiadomości
-function updateMessage() {
-  if (!gameOver) {
-    messageDiv.textContent = selectedLang==='Pl'?`Tura gracza: ${currentPlayer}`:`Player turn: ${currentPlayer}`;
-  }
+function checkWinner(player) {
+  const combos = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+  return combos.some(combo => combo.every(idx => board[idx]===player));
 }
 
-// 🔹 restart gry
-restartBtn.onclick = () => {
-  board.fill(null);
-  cells.forEach(cell => cell.textContent = "");
+function isGameOver() {
+  return checkWinner("X") || checkWinner("O") || board.every(cell => cell);
+}
+
+function botMove() {
+  const empty = board.map((v,i) => v === "" ? i : null).filter(v=>v!==null);
+  if(empty.length === 0) return;
+  const randIdx = empty[Math.floor(Math.random()*empty.length)];
+  makeMove(randIdx, "O");
+}
+
+function restartGame() {
+  board = Array(9).fill("");
   currentPlayer = "X";
-  gameOver = false;
-  updateMessage();
-};
+  cells.forEach(cell => cell.textContent="");
+  messageDiv.textContent="";
+}
