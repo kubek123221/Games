@@ -1,0 +1,80 @@
+Apple;Brand
+Google;Brand
+Microsoft;Brand
+Amazon;Brand
+Nvidia;Brand
+Facebook;Brand
+Instagram;Brand
+McDonald's;Brand
+Oracle;Brand
+Visa;Brand
+Tesla;Brand
+Samsung;Brand
+Coca-Cola;Brand
+Toyota;Brand
+Netflix;Brand
+Louis-Vuitton;Brand
+Nike;Brand
+Disney;Brand
+BMW;Brand
+Intel;Brand
+Rose;Flower
+Tulip;Flower
+Orchid;Flower
+Lily;K Sunflower;Flower
+Daisy;Flower
+Violet;Flower
+Hibiscus;Flower
+Lavender;Flower
+Carnation;Flower
+Magnolia;Flower
+Jasmine;Flower
+Iris;Flower
+Chrysanthemum;Flower
+Peony;Flower
+Fuchsia;Flower
+Azalea;Flower
+Crocus;Flower
+Gardenia;Flower
+Daffodil;Flower
+Narcissus;Flower
+Antoni;Male Name
+Jan;Male Name
+Jakub;Male Name
+Aleksander;Male Name
+Franciszek;Name- Male
+Szymon;Male-Name
+Mikołaj;Male-Name
+Leon;Male-Name
+Adam;Male-Name
+Filip;Male-Name
+Zuzanna;Female-Name
+Julia;Female-Name
+Lena;Female-Name
+Hanna;Female-Name
+Maja;Female-Name
+Amelia;Female-Name
+Alicja;Female-Name
+Maria;Female-Name
+Oliwia;Female-Name
+Natalia;Female-Name
+Phone;Item
+Laptop;Pro Item
+Keys;Item
+Wallet;Item
+Backpack;Item
+Pen;Item
+Notebook;Item
+Mug;Item
+Shoes;Item
+Shirt;Item
+Glasses;Item
+Headphones;Item
+Watch;Item
+Bag;Item
+Bicycle;Item
+Charger;Item
+Chair;Item
+Table;Item
+Book;Item
+Camera;Item
