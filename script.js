@@ -1,287 +1,70 @@
-let words = [];
-let word = "";
-let category = "";
-let guessed = [];
-let wrong = 0;
-let selectedFile = null;
-let selectedLang = 'Pl'; // domyślnie Polski
-let selectedCategory = null;
-
-// tryb 2 graczy
-let twoPlayerMode = false;
-let currentPlayer = 1;
-let player1Score = 0;
-let player2Score = 0;
-
-const stages = [
-`
-
-
-
-
-
-
-
-==========================`,
-`
-        ┌────────────┐
-        │            
-        │            
-        │            
-        │            
-        │            
-        │            
-==========================`,
-`
-        ┌────────────┐
-        │            |
-        │           (^_^)
-        │            
-        │            
-        │            
-        │            
-==========================`,
-`
-        ┌────────────┐
-        │            |
-        │           (•_•)
-        │             │
-        │             │
-        │            
-        │            
-==========================`,
-`
-        ┌────────────┐
-        │            |
-        │           (o_o)
-        │            /│
-        │             │
-        │            
-        │            
-==========================`,
-`
-        ┌────────────┐
-        │            |
-        │           (O_O)
-        │            /│\\
-        │             │
-        │            
-        │            
-==========================`,
-`
-        ┌────────────┐
-        │            |
-        │           (>-<)
-        │            /│\\
-        │             │
-        │            / 
-        │            
-==========================`,
-`
-        ┌────────────┐
-        │            |
-        │           (X_X)
-        │           _/│\\_
-        │             │
-        │            / \\
-        │         ─────────
-==========================
-
-💀 KONIEC GRY 💀`
-];
-
-const wordDiv = document.getElementById("word");
-const lettersDiv = document.getElementById("letters");
-const stagesDiv = document.getElementById("stages");
-const messageDiv = document.getElementById("message");
-const restartBtn = document.getElementById("restart");
-const rematchBtn = document.getElementById("rematch");
-const twoPlayersBtn = document.getElementById("twoPlayers");
-const categoryDiv = document.getElementById("category");
-
-const player1ScoreTd = document.getElementById("player1Score");
-const player2ScoreTd = document.getElementById("player2Score");
-const scoreboard = document.getElementById("scoreboard");
-
-const langToggleBtn = document.getElementById("langToggle");
-
-const rows = [
-  "q w e r t y u i o p".split(" "),
-  "a s d f g h j k l".split(" "),
-  "z x c v b n m".split(" ").concat(["ą","ć","ę","ł","ń","ó","ś","ź","ż"])
-];
-
-// 🔹 przycisk zmiany języka
-langToggleBtn.onclick = () => {
-  selectedLang = selectedLang === 'Pl' ? 'Ang' : 'Pl';
-  langToggleBtn.textContent = selectedLang === 'Pl' ? 'Polsk🇵🇱' : 'English🇬🇧';
-  if (selectedCategory) {
-    if(selectedCategory === 'misc') selectedFile = selectedLang==='Pl'?'polskie_slowa.txt':'english_words.txt';
-    else if(selectedCategory === 'games') selectedFile = selectedLang==='Pl'?'gry_Pl.txt':'games_Ang.txt';
-    loadWords();
-  }
-  updateUIText();
-};
-
-// 🔹 zmiana tekstów interfejsu
-function updateUIText() {
-  if (selectedLang === 'Pl') {
-    restartBtn.textContent = '🔄 Zagraj ponownie';
-    twoPlayersBtn.textContent = '👥 2 Gracze';
-    rematchBtn.textContent = '♻ Rewanż';
-  } else {
-    restartBtn.textContent = '🔄 Play Again';
-    twoPlayersBtn.textContent = '👥 2 Players';
-    rematchBtn.textContent = '♻ Rematch';
-  }
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #557391;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-// 🔹 wybór kategorii
-function selectCategory(baseName) {
-  selectedCategory = baseName;
-  if(baseName==='misc') selectedFile = selectedLang==='Pl'?'polskie_slowa.txt':'english_words.txt';
-  else if(baseName==='games') selectedFile = selectedLang==='Pl'?'gry_Pl.txt':'games_Ang.txt';
-
-  document.getElementById("category-select").style.display="none";
-  document.getElementById("game").style.display="block";
-  loadWords();
+.container {
+  margin-top: 50px;
 }
 
-// 🔹 wczytywanie słów
-async function loadWords() {
-  try {
-    const response = await fetch(selectedFile);
-    const text = await response.text();
-    words = text.split("\n").map(line=>{
-      line=line.trim();
-      if(!line) return null;
-      const parts = line.split(";");
-      return { word: parts[0].trim().toLowerCase(), category: parts[1]?.trim()|| (selectedLang==='Pl'?'Brak kategorii':'No category') };
-    }).filter(Boolean);
-
-    if(words.length===0){
-      messageDiv.textContent = selectedLang==='Pl'?"⚠️ Plik pusty lub źle sformatowany!":"⚠️ File empty or incorrect!";
-      return;
-    }
-    startGame();
-  } catch {
-    messageDiv.textContent = selectedLang==='Pl' ? `⚠️ Nie udało się wczytać pliku ${selectedFile}!` : `⚠️ Could not load ${selectedFile}!`;
-  }
+h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
 }
 
-// 🔹 start gry
-function startGame() {
-  guessed = [];
-  wrong = 0;
-  currentPlayer=1;
-  messageDiv.textContent = "";
-  stagesDiv.textContent = stages[0];
-  categoryDiv.textContent = "";
-
-  const chosen = words[Math.floor(Math.random()*words.length)];
-  word = chosen.word;
-  category = chosen.category;
-  categoryDiv.textContent = selectedLang==='Pl'?`Kategoria: ${category}`:`Category: ${category}`;
-
-  showWord();
-  generateLetters();
+#game-board {
+  display: inline-block;
+  margin-bottom: 20px;
 }
 
-// 🔹 wyświetlanie słowa
-function showWord(){
-  const display = word.split("").map(l=>(l==="-"?"-":guessed.includes(l)?l:"_")).join(" ");
-  wordDiv.textContent = display;
-
-  if(!display.includes("_")){
-    if(twoPlayerMode){
-      currentPlayer===1?player1Score+=5:player2Score+=5;
-      updateScoreboard();
-      messageDiv.textContent = selectedLang==='Pl'?`🎉 Gracz ${currentPlayer} wygrał! Słowo: ${word}`:`🎉 Player ${currentPlayer} wins! Word: ${word}`;
-    } else {
-      messageDiv.textContent = selectedLang==='Pl'?`🎉 Wygrałeś! Słowo: ${word}`:`🎉 You won! Word: ${word}`;
-    }
-    disableLetters();
-    rematchBtn.style.display="inline-block";
-  }
+.row {
+  display: flex;
 }
 
-// 🔹 generowanie klawiatury
-function generateLetters(){
-  lettersDiv.innerHTML="";
-  rows.forEach(row=>{
-    const rowDiv = document.createElement("div");
-    rowDiv.className="keyboard-row";
-    row.forEach(letter=>{
-      if(selectedLang==='Ang' && "ąćęłńóśźż".includes(letter)) return;
-      const btn = document.createElement("button");
-      btn.textContent=letter;
-      btn.onclick=()=>guess(letter,btn);
-      rowDiv.appendChild(btn);
-    });
-    lettersDiv.appendChild(rowDiv);
-  });
+.cell {
+  width: 80px;
+  height: 80px;
+  font-size: 2.5em;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background: #95f882;
+  color: #101820;
+  transition: 0.2s;
 }
 
-// 🔹 zgadywanie liter
-function guess(letter,button){
-  button.disabled=true;
-  if(word.includes(letter)){
-    guessed.push(letter);
-    if(twoPlayerMode){
-      const count=word.split("").filter(l=>l===letter).length;
-      currentPlayer===1?player1Score+=count:player2Score+=count;
-      updateScoreboard();
-    }
-    showWord();
-  } else {
-    wrong++;
-    updateHangman();
-    if(wrong>=stages.length-1){
-      messageDiv.textContent = selectedLang==='Pl'?`💀 Koniec rundy! Słowo: ${word}`:`💀 Game over! Word: ${word}`;
-      disableLetters();
-      rematchBtn.style.display="inline-block";
-    }
-  }
-
-  if(twoPlayerMode && !word.includes(letter)){
-    currentPlayer=currentPlayer===1?2:1;
-    messageDiv.textContent = selectedLang==='Pl'?`Tura gracza ${currentPlayer}`:`Player ${currentPlayer} turn`;
-  }
+.cell:hover {
+  background: #ffffff;
+  color: #101820;
 }
 
-// 🔹 rysowanie wisielca
-function updateHangman(){ stagesDiv.textContent=stages[wrong]; }
-
-// 🔹 blokowanie przycisków
-function disableLetters(){ document.querySelectorAll("#letters button").forEach(btn=>btn.disabled=true); }
-
-// 🔹 tryb 2 graczy
-twoPlayersBtn.onclick = ()=>{
-  twoPlayerMode=true;
-  player1Score=0; player2Score=0;
-  updateScoreboard();
-  scoreboard.style.display="block";
-  startGame();
-};
-
-// 🔹 rewanż (punkty zostają)
-rematchBtn.onclick = ()=>{
-  rematchBtn.style.display="none";
-  startGame();
-};
-
-// 🔹 aktualizacja punktów
-function updateScoreboard(){
-  player1ScoreTd.textContent=player1Score;
-  player2ScoreTd.textContent=player2Score;
+#restart, #botMode {
+  margin: 10px 5px;
+  padding: 12px 24px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
 }
 
-// 🔹 restart gry (punkty zerowane)
-restartBtn.onclick = ()=>{
-  twoPlayerMode=false;
-  scoreboard.style.display="none";
-  rematchBtn.style.display="none";
-  player1Score=0; player2Score=0;
-  updateScoreboard();
-  startGame();
-};
+#restart:hover {
+  background: #ffffff;
+  color: #101820;
+}
+
+#botMode:hover {
+  background: #2980b9;
+}
+
+#message {
+  font-size: 1.4em;
+  margin: 15px 0;
+  min-height: 1.5em;
+}
