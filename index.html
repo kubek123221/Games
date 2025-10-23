@@ -1,19 +1,112 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Gier 🎮</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu Główne</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .menu button, .category-buttons button {
+      margin: 10px;
+      padding: 20px 40px;
+      background: #95f882;
+      color: #101820;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1.3em;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .menu button:hover, .category-buttons button:hover {
+      background: #ffffff;
+      color: #101820;
+      box-shadow: 0 0 12px #95f882;
+      transform: scale(1.05);
+    }
+
+    .menu {
+      margin-bottom: 40px;
+    }
+
+    .category-section {
+      margin-top: 20px;
+    }
+
+    .category-section h2 {
+      font-size: 1.6em;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>🎮 Wybierz grę</h1>
+    <h1 id="title">🎮 Wybierz grę</h1>
 
-    <div class="menu-buttons">
-      <button onclick="window.location.href='wisielec.html'">🎯 Wisielec</button>
-      <button onclick="window.location.href='kolkoikrzyzyk.html'">⭕❌ Kółko i Krzyżyk</button>
+    <div class="menu">
+      <button id="btnHangman" onclick="openGame('wisielec')">🪢 Wisielec</button>
+      <button id="btnTicTacToe" onclick="openGame('kolko_krzyzyk')">⭕ Kółko i krzyżyk</button>
+    </div>
+
+    <div class="category-section">
+      <h2 id="catTitle">Kategorie</h2>
+      <div class="category-buttons">
+        <button id="btnMinecraft" onclick="openCategory('minecraft')">Minecraft</button>
+        <button id="btnFortnite" onclick="openCategory('fortnite')">Fortnite</button>
+        <button id="btnMisc" onclick="openCategory('misc')">Różne</button>
+      </div>
     </div>
   </div>
+
+  <!-- 🔹 Przycisk zmiany języka -->
+  <button id="langToggle" onclick="toggleLang()">Polsk🇵🇱</button>
+
+  <script>
+    let currentLang = localStorage.getItem("lang") || "Pl"; // zapamiętanie języka między stronami
+
+    // 🔹 Odświeżenie języka przy załadowaniu strony
+    document.addEventListener("DOMContentLoaded", updateLangUI);
+
+    function toggleLang() {
+      currentLang = currentLang === "Pl" ? "Ang" : "Pl";
+      localStorage.setItem("lang", currentLang);
+      updateLangUI();
+    }
+
+    function updateLangUI() {
+      const btn = document.getElementById("langToggle");
+
+      if (currentLang === "Pl") {
+        btn.textContent = "Polsk🇵🇱";
+        document.getElementById("title").textContent = "🎮 Wybierz grę";
+        document.getElementById("btnHangman").textContent = "🪢 Wisielec";
+        document.getElementById("btnTicTacToe").textContent = "⭕ Kółko i krzyżyk";
+        document.getElementById("catTitle").textContent = "Kategorie";
+        document.getElementById("btnMinecraft").textContent = "Minecraft";
+        document.getElementById("btnFortnite").textContent = "Fortnite";
+        document.getElementById("btnMisc").textContent = "Różne";
+      } else {
+        btn.textContent = "English🇬🇧";
+        document.getElementById("title").textContent = "🎮 Choose Game";
+        document.getElementById("btnHangman").textContent = "🪢 Hangman";
+        document.getElementById("btnTicTacToe").textContent = "⭕ Tic Tac Toe";
+        document.getElementById("catTitle").textContent = "Categories";
+        document.getElementById("btnMinecraft").textContent = "Minecraft";
+        document.getElementById("btnFortnite").textContent = "Fortnite";
+        document.getElementById("btnMisc").textContent = "Misc";
+      }
+    }
+
+    // 🔹 Otwieranie gry / kategorii z przekazaniem języka
+    function openGame(game) {
+      location.href = `${game}.html?lang=${currentLang}`;
+    }
+
+    function openCategory(category) {
+      location.href = `wisielec.html?category=${category}&lang=${currentLang}`;
+    }
+  </script>
 </body>
 </html>
