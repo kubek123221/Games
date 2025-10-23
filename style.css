@@ -1,4 +1,3 @@
-
 body {
   font-family: "Segoe UI", sans-serif;
   background: #557391;
@@ -45,8 +44,8 @@ h1 {
   box-shadow: 0 0 10px #95f882;
 }
 
-/* --- PRZYCISKI ZAGRAJ PONOWNIE / 2 GRACZY --- */
-#restart, #twoPlayers {
+/* --- PRZYCISKI ZAGRAJ PONOWNIE / 2 GRACZY / REWANŻ --- */
+#restart, #twoPlayers, #rematch {
   display: inline-block;
   margin-top: 15px;
   background: #95f882;
@@ -60,7 +59,7 @@ h1 {
   transition: 0.3s ease;
 }
 
-#restart:hover, #twoPlayers:hover {
+#restart:hover, #twoPlayers:hover, #rematch:hover {
   background: #ffffff;
   color: #101820;
   box-shadow: 0 0 10px #95f882;
@@ -176,15 +175,11 @@ h1 {
 
 #stages {
   color: #ffffff;
-  font-family: "Courier New", monospace;
-  font-size: 2em;
-  margin: 30px 0 15px 0;
+  font-family: monospace;
+  font-size: 1.3em;
+  margin-bottom: 10px;
   white-space: pre;
-  line-height: 1.1;
-  text-shadow: 0 0 8px rgba(255,255,255,0.4), 0 0 20px rgba(149,248,130,0.3);
-  transition: opacity 0.4s ease;
 }
-
 
 @media (max-width: 500px) {
   #letters button {
@@ -194,7 +189,7 @@ h1 {
     max-width: 40px;
   }
 
-  #restart, #twoPlayers {
+  #restart, #twoPlayers, #rematch {
     padding: 14px 28px;
     font-size: 1.1em;
   }
